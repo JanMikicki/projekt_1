@@ -3,19 +3,22 @@
 
 using namespace std;
 
-struct polaczenia
+struct polaczenie
 {
     int miasto1;
     int miasto2;
     int waga;
     int przynaleznosc_do_drzewa=0;
     bool uzyte=0;
+
+	polaczenie* nastepne;
+
 };
 
-const int MAX_N=500;
-int ilosc_miast=0, ilosc_polaczen=0, wybor;
-polaczenia polaczenie[MAX_N];
 
+int ilosc_miast=0, ilosc_polaczen=0, wybor;
+
+polaczenie* start_listy;
 
 
 void start();
@@ -56,25 +59,39 @@ void start()
 
 void zapisywanie_polaczenia ()
 {
+
+	polaczenie* nowe =  new polaczenie;
+	if (ilosc_polaczen == 0) start_listy = nowe;
+	else {
+		polaczenie* znajdz_ostatni = start_listy;
+		while (znajdz_ostatni->nastepne != NULL) znajdz_ostatni = znajdz_ostatni->nastepne;
+		znajdz_ostatni->nastepne = nowe;
+	}
+
+	nowe->nastepne = NULL;
+
     system("cls");
 
     cout<<"\n\n\n                           Polaczenia\n\n             Mozesz podac maksymalnie 500 polaczen! \n\n\n";
     cout<<"                Aktualnie podales "<<ilosc_polaczen<<" polaczen.\n\n\n";
 
     cout<<"                Podaj numer pierwszego miasta: ";
-    cin>>polaczenie[ilosc_polaczen].miasto1;
+    cin>> nowe->miasto1;
 
    cout<<"                 Podaj numer drugiego miasta: ";
-    cin>>polaczenie[ilosc_polaczen].miasto2;
+    cin>> nowe->miasto2;
 
     cout<<"                   Podaj wage polaczenia: ";
-    cin>>polaczenie[ilosc_polaczen].waga;
+    cin>> nowe->waga;
 
     ilosc_polaczen++;
 
-    cout<<"\n\n\n               1)   Dodaj kolejne polaczenie";
+    cout<<"\n\n\n               1)   Dodaj kolejne polaczenia";
     cout<<"\n\n               0)            Wyjscie\n";
     cin>>wybor;
+
+
+	// trzeba potem tak zrobic zeby nie laczyc 2 miast kilka razy
 
      switch(wybor)
            {
@@ -109,9 +126,9 @@ void wypisywanie()
     cout<<"    ---------------------------------------\n";
     for(int i=0;i<ilosc_polaczen-1;i++)
     {
-        if(polaczenie[i].uzyte)
+        //if(polaczenia[i].uzyte)
         {
-           cout<<"     "<<i+1<<"   |      "<<polaczenie[i].miasto1<<"     |      "<<polaczenie[i].miasto2<<"     |    "<<polaczenie[i].waga<<endl;
+         //  cout<<"     "<<i+1<<"   |      "<<polaczenia[i].miasto1<<"     |      "<<polaczenia[i].miasto2<<"     |    "<<polaczenia[i].waga<<endl;
         }
 
     }
