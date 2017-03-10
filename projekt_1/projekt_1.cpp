@@ -61,14 +61,6 @@ void zapisywanie_polaczenia ()
 {
 
 	polaczenie* nowe =  new polaczenie;
-	if (ilosc_polaczen == 0) start_listy = nowe;
-	else {
-		polaczenie* znajdz_ostatni = start_listy;
-		while (znajdz_ostatni->nastepne != NULL) znajdz_ostatni = znajdz_ostatni->nastepne;
-		znajdz_ostatni->nastepne = nowe;
-	}
-
-	nowe->nastepne = NULL;
 
     system("cls");
 
@@ -84,6 +76,31 @@ void zapisywanie_polaczenia ()
     cout<<"                   Podaj wage polaczenia: ";
     cin>> nowe->waga;
 
+	if (ilosc_polaczen == 0) {
+		start_listy = nowe;
+		nowe->nastepne = NULL;
+	}
+	else if (start_listy->waga >= nowe->waga) {
+
+		nowe->nastepne = start_listy;
+		start_listy = nowe;
+
+	}
+	else {
+
+		polaczenie* szukaj = start_listy;
+		polaczenie* poprzedni;
+		
+		while (szukaj != NULL && szukaj->waga <= nowe->waga) {
+			poprzedni = szukaj;
+			szukaj = szukaj->nastepne;
+		}
+		nowe->nastepne = szukaj;
+		poprzedni->nastepne = nowe;
+		
+	}
+
+
     ilosc_polaczen++;
 
     cout<<"\n\n\n               1)   Dodaj kolejne polaczenia";
@@ -91,7 +108,7 @@ void zapisywanie_polaczenia ()
     cin>>wybor;
 
 
-	// trzeba potem tak zrobic zeby nie laczyc 2 miast kilka razy
+	// powinnismy potem tak zrobic zeby nie laczyc 2 miast kilka razy
 
      switch(wybor)
            {
@@ -109,7 +126,15 @@ void generowanie_drzewa()
 
 void porzadkowanie()
 {
-    ;
+	
+	polaczenie *node = start_listy;
+	for (int l = 0; l < ilosc_polaczen; l++) {
+
+		cout << "pol. " << l + 1 << "waga: " << node->waga << endl;
+		node = node->nastepne;
+	}
+	system("pause");
+    
 }
 
 void tworzenie_polaczen()
