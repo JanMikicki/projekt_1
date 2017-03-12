@@ -14,18 +14,25 @@ struct polaczenie
 
 };
 
+struct drzewo {
+	polaczenie* krawedzie;
+	drzewo* nastepne_drzewo;
+};
 
-int ilosc_miast=0, ilosc_polaczen=0, wybor;
+int ilosc_miast = 0;
+int ilosc_polaczen = 0;
+int wybor;
 
 polaczenie* start_listy = NULL;
-
+drzewo* las = new drzewo;
 
 void start();
 void zapisywanie_polaczenia();
 void generowanie_drzewa();
-void porzadkowanie();
 void tworzenie_polaczen();
 void wypisywanie();
+int przeszukaj_las(drzewo*, polaczenie*, int &);
+int przeszukaj_drzewo(polaczenie*, polaczenie*);
 
 
 int main()
@@ -141,36 +148,19 @@ void zapisywanie_polaczenia ()
            }
 
 }
+
 void generowanie_drzewa()
 {
-   porzadkowanie();
    tworzenie_polaczen();
    wypisywanie();
 }
 
-void porzadkowanie()
-{
-
-	polaczenie *node = start_listy;
-	for (int l = 0; l < ilosc_polaczen; l++) {
-
-		cout << "pol. " << l + 1 << "waga: " << node->waga << endl;
-		node = node->nastepne;
-	}
-	//system("pause");
-
-}
-
-struct drzewo {
-	polaczenie* krawedzie;
-	drzewo* nastepne_drzewo;
-};
 
 int przeszukaj_drzewo(polaczenie* krawedzie, polaczenie* aktualne) {
 
 	// co zwraca:
 	// 0 - nie znaleziono w drzewie wierzcholkow
-	// 1 - znaleziono w drzewie jeden z wierzcholkow (moze da sie polaczyc z innym drzewem)
+	// 1 - znaleziono w drzewie jeden z wierzcholkow (moze da sie polaczyc z innym drzewem, a jesli nie to na koniec dolacz do tego gdzie znaleziono wierzcholek)
 	// 2 - znaleziono w drzewie oba wierzcholki (nie dolaczaj)
 
 	int pierwszy = aktualne->miasto1;
@@ -188,8 +178,7 @@ int przeszukaj_drzewo(polaczenie* krawedzie, polaczenie* aktualne) {
 			if (ktory_znaleziono == 1) return 2;
 			else ktory_znaleziono = 2;
 		}
-		//else ktory_znaleziono = 0;
-
+		
 		przeszukaj = przeszukaj->nastepne;
 
 	} while (przeszukaj != NULL);
@@ -213,23 +202,26 @@ int przeszukaj_las(drzewo* las, polaczenie* aktualne, int &i) {
 	do {
 
 		int h = przeszukaj_drzewo(las_temp->krawedzie, aktualne);
-		if (h == 2) {
-			return 0;
+		switch (h)
+		{
+		case 1: if (znaleziono) {
+			//lacz drzewa i oraz aktualne->przynaleznosc
+			return 2;
 		}
-		else if (h == 1) {
-			if (znaleziono) {
-				 //lacz drzewa i oraz aktualne->przynaleznosc
-				return 2;
-			}
-			else {
-				znaleziono = true;
-				aktualne->przynaleznosc_do_drzewa = i;
-				las_temp = las_temp->nastepne_drzewo;
-			}
-		}
-		else las_temp = las_temp->nastepne_drzewo;
-		i++;
+				else {
+					znaleziono = true;
+					aktualne->przynaleznosc_do_drzewa = i;
+					las_temp = las_temp->nastepne_drzewo;
+				}
+				break;
 
+		case 2: return 0;
+
+		default: las_temp = las_temp->nastepne_drzewo;
+			break;
+		}
+		i++;
+		
 	} while (las_temp != NULL);
 
 	if (znaleziono) //dolacz do drzewa
@@ -238,14 +230,11 @@ int przeszukaj_las(drzewo* las, polaczenie* aktualne, int &i) {
 	else return 3;
 }
 
-drzewo* las = new drzewo;
 
 void tworzenie_polaczen()
 {
 	polaczenie* aktualne = start_listy;
 	start_listy = start_listy->nastepne;
-
-
 
 	las->nastepne_drzewo = NULL;
 	las->krawedzie = aktualne;
@@ -262,11 +251,29 @@ void tworzenie_polaczen()
 
 		int r = przeszukaj_las(las, aktualne, i);
 
-		if (r == 0) delete aktualne; // niepotrzebna krawedz
+		switch (r)
+		{
 
-		else if (r == 2) {
+		case 0: delete aktualne; // niepotrzebna krawedz
+			break;
 
-			//polacz 2 drzewa (i oraz aktualne->przynaleznosc)
+		case 1: //dolacz do drzewa aktualne->przynaleznosc
+
+			for (int j = 0; j < aktualne->przynaleznosc_do_drzewa; j++) {
+				przeszukuj_las = przeszukuj_las->nastepne_drzewo;
+			}
+			przeszukuj_drzewo = przeszukuj_las->krawedzie;
+
+			while (przeszukuj_drzewo->nastepne != NULL)
+				przeszukuj_drzewo = przeszukuj_drzewo->nastepne;
+
+			przeszukuj_drzewo->nastepne = aktualne;
+
+			aktualne->nastepne = NULL;
+			break;
+
+		case 2: //polacz 2 drzewa (i oraz aktualne->przynaleznosc)
+
 			drzewo* drzewo_do_polaczenia;
 
 			for (int j = 0; j < aktualne->przynaleznosc_do_drzewa; j++) {
@@ -289,28 +296,10 @@ void tworzenie_polaczen()
 			aktualne->nastepne = przeszukuj_las->krawedzie;
 			drzewo_do_polaczenia = drzewo_do_polaczenia->nastepne_drzewo;
 			drzewo_do_polaczenia->nastepne_drzewo = przeszukuj_las->nastepne_drzewo;
-			
-		}
-		else if (r == 1) {
 
-			//dolacz do drzewa aktualne->przynaleznosc
+			break;
 
-			for (int j = 0; j < aktualne->przynaleznosc_do_drzewa; j++) {
-				przeszukuj_las = przeszukuj_las->nastepne_drzewo;
-			}
-			przeszukuj_drzewo = przeszukuj_las->krawedzie;
-
-			while (przeszukuj_drzewo->nastepne != NULL)
-				przeszukuj_drzewo = przeszukuj_drzewo->nastepne;
-
-			przeszukuj_drzewo->nastepne = aktualne;
-
-			aktualne->nastepne = NULL;
-
-		}
-		else {
-
-			//zrob nowe drzewo i tam dolacz
+		default: //zrob nowe drzewo i tam dolacz
 
 			while (przeszukuj_las->nastepne_drzewo != NULL)
 				przeszukuj_las = przeszukuj_las->nastepne_drzewo;
@@ -320,6 +309,7 @@ void tworzenie_polaczen()
 			przeszukuj_las->nastepne_drzewo->krawedzie = aktualne;
 
 			aktualne->nastepne = NULL;
+			break;
 		}
 
 	} while (start_listy != NULL);
@@ -344,7 +334,6 @@ void wypisywanie()
 
 	cout << "\n\n";
 	system("pause");
-
 
 }
 
