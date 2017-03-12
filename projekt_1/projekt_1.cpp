@@ -105,21 +105,21 @@ void zapisywanie_polaczenia ()
 
 		polaczenie* szukaj = start_listy;
 		polaczenie* poprzedni;
-		
+
 		while (szukaj != NULL && szukaj->waga <= nowe->waga) {
 			poprzedni = szukaj;
 			szukaj = szukaj->nastepne;
 		}
 		nowe->nastepne = szukaj;
 		poprzedni->nastepne = nowe;
-		
+
 	}
 
 
     ilosc_polaczen++;
 
     cout<<"\n\n\n               1)   Dodaj kolejne polaczenia";
-    cout<<"\n\n               0)            Wyjscie\n";
+    cout<<"\n\n               0)            Powrot\n";
     cin>>wybor;
 
 
@@ -141,7 +141,7 @@ void generowanie_drzewa()
 
 void porzadkowanie()
 {
-	
+
 	polaczenie *node = start_listy;
 	for (int l = 0; l < ilosc_polaczen; l++) {
 
@@ -149,7 +149,7 @@ void porzadkowanie()
 		node = node->nastepne;
 	}
 	//system("pause");
-    
+
 }
 
 struct drzewo {
@@ -158,19 +158,19 @@ struct drzewo {
 };
 
 int przeszukaj_drzewo(polaczenie* krawedzie, polaczenie* aktualne) {
-	
+
 	// co zwraca:
 	// 0 - nie znaleziono w drzewie wierzcholkow
 	// 1 - znaleziono w drzewie jeden z wierzcholkow (moze da sie polaczyc z innym drzewem)
 	// 2 - znaleziono w drzewie oba wierzcholki (nie dolaczaj)
-	
+
 	int pierwszy = aktualne->miasto1;
 	int drugi = aktualne->miasto2;
 	int ktory_znaleziono = 0;
 	polaczenie* przeszukaj = krawedzie;
 
 	do {
-	
+
 		if (przeszukaj->miasto1 == pierwszy || przeszukaj->miasto2 == pierwszy) {
 			if (ktory_znaleziono == 2) return 2;
 			else ktory_znaleziono = 1;
@@ -200,13 +200,13 @@ int przeszukaj_las(drzewo* las, polaczenie* aktualne, int &i) {
 
 	drzewo* las_temp = las;
 	bool znaleziono = false; // sprawdza czy wczesniej znaleziono jakis wierzcholek w ktoryms poprzednim drzewie
-	
+
 	do {
 
 		int h = przeszukaj_drzewo(las_temp->krawedzie, aktualne);
-		if (h == 2) { 
+		if (h == 2) {
 			return 0;
-		} 
+		}
 		else if (h == 1) {
 			if (znaleziono) {
 				 //lacz drzewa i oraz aktualne->przynaleznosc
@@ -220,7 +220,7 @@ int przeszukaj_las(drzewo* las, polaczenie* aktualne, int &i) {
 		}
 		else las_temp = las_temp->nastepne_drzewo;
 		i++;
-		
+
 	} while (las_temp != NULL);
 
 	if (znaleziono) //dolacz do drzewa
@@ -236,8 +236,8 @@ void tworzenie_polaczen()
 	polaczenie* aktualne = start_listy;
 	start_listy = start_listy->nastepne;
 
-	
-	
+
+
 	las->nastepne_drzewo = NULL;
 	las->krawedzie = aktualne;
 	aktualne->nastepne = NULL;
@@ -246,7 +246,7 @@ void tworzenie_polaczen()
 		aktualne = start_listy;
 		start_listy = start_listy->nastepne;
 
-		drzewo* przeszukuj_las = las;	
+		drzewo* przeszukuj_las = las;
 		polaczenie* przeszukuj_drzewo;
 
 		int i = 0;
@@ -256,7 +256,7 @@ void tworzenie_polaczen()
 		if (r == 0) delete aktualne; // niepotrzebna krawedz
 
 		else if (r == 2) {
-		
+
 			//polacz 2 drzewa (i oraz aktualne->przynaleznosc)
 			drzewo* drzewo_do_polaczenia;
 
@@ -283,7 +283,7 @@ void tworzenie_polaczen()
 			//na 100% nie dziala
 		}
 		else if (r == 1) {
-			
+
 			//dolacz do drzewa aktualne->przynaleznosc
 
 			for (int j = 0; j < aktualne->przynaleznosc_do_drzewa; j++) {
@@ -322,20 +322,20 @@ void wypisywanie()
     system("cls");
 
     cout<<"\n\n               LISTA:\n\n";
-    cout<<"     NR  |  Miasto A  |  Miasto B  |  Waga;\n";
-    cout<<"    ---------------------------------------\n";
-	
-	
+    cout<<"       Miasto A  |  Miasto B  |  Waga;\n";
+    cout<<"      ---------------------------------\n";
+
+
 	while (las->krawedzie != NULL) {
 
-		cout << "    " << las->krawedzie->miasto1 << "     |      " << las->krawedzie->miasto2 << "     |    " << las->krawedzie->waga << endl;
+		cout << "           " << las->krawedzie->miasto1 << "     |      " << las->krawedzie->miasto2 << "     |    " << las->krawedzie->waga << endl;
 
 		las->krawedzie = las->krawedzie->nastepne;
 	}
 
 	system("pause");
 
-    
+
 }
 
 
