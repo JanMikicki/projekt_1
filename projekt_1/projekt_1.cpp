@@ -9,7 +9,6 @@ struct polaczenie
     int miasto2;
     int waga;
     int przynaleznosc_do_drzewa=0;
-    bool uzyte=0;
 
 	polaczenie* nastepne;
 
@@ -54,6 +53,7 @@ void start()
            {
                case 1:  zapisywanie_polaczenia ();         break;
                case 2:  generowanie_drzewa();              break;
+               default: start();                           break;
            }
 }
 
@@ -71,15 +71,15 @@ void zapisywanie_polaczenia ()
 	cin >> nowe->miasto1;
 
 	while (nowe->miasto1 <= 0 || nowe->miasto1 > ilosc_miast) {
-		cout << "podaj poprawny numer miasta: ";
+		cout << "          podaj poprawny numer miasta: ";
 		cin >> nowe->miasto1;
 	};
 
    cout<<"                 Podaj numer drugiego miasta: ";
     cin>> nowe->miasto2;
 
-	while (nowe->miasto2 <= 0 || nowe->miasto2 > ilosc_miast) {
-		cout << "podaj poprawny numer miasta: ";
+	while (nowe->miasto2 <= 0 || nowe->miasto2 > ilosc_miast || nowe->miasto2 == nowe->miasto1) {
+		cout << "          podaj poprawny numer miasta: ";
 		cin >> nowe->miasto2;
 	};
 
@@ -87,7 +87,7 @@ void zapisywanie_polaczenia ()
     cin>> nowe->waga;
 
 	while (nowe->waga <= 0) {
-		cout << "Podaj dodatnia wage: ";
+		cout << "          Podaj dodatnia wage: ";
 		cin >> nowe->waga;
 	}
 
@@ -129,6 +129,11 @@ void zapisywanie_polaczenia ()
            {
                case 0:  start();                      break;
                case 1:  zapisywanie_polaczenia ();    break;
+               default: {
+                            cout<<"          Podales zly numer!!!\n\n";
+                            system("pause");
+                             start();
+                        }                           break;
            }
 
 }
