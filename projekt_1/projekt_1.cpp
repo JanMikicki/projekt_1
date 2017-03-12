@@ -8,11 +8,8 @@ struct polaczenie
     int miasto1;
     int miasto2;
     int waga;
-<<<<<<< HEAD
     int przynaleznosc_do_drzewa=0;
-=======
-    int przynaleznosc_do_drzewa=0;   
->>>>>>> origin/master
+
 
 	polaczenie* nastepne;
 
@@ -68,41 +65,35 @@ void zapisywanie_polaczenia ()
 
     system("cls");
 
+    cout<<"\n\n                  Aktualnie podales "<<ilosc_polaczen<<" polaczen.\n\n\n";
+
 	if (start_listy != NULL) {
 		polaczenie* wyswietlaj = start_listy;
-		cout << "Dodane polaczenia: \n" << endl;
-		cout << "Miasto A" << " | " << "Miasto B" << " | Waga" << endl;
+		cout << "                       Dodane polaczenia: \n" << endl;
+		cout << "                    Miasto A" << " | " << "Miasto B" << " | Waga" << endl;
+		cout << "                  -------------------------------"<< endl;
 		do {
-			cout << "     " << wyswietlaj->miasto1 << "         " << wyswietlaj->miasto2 << "        " << wyswietlaj->waga << endl;
+			cout << "                       " << wyswietlaj->miasto1 << "     |    " << wyswietlaj->miasto2 << "     |   " << wyswietlaj->waga << endl;
 			wyswietlaj = wyswietlaj->nastepne;
 		} while (wyswietlaj != NULL);
 	}
 
-    
-    cout<<"\n\n             Aktualnie podales "<<ilosc_polaczen<<" polaczen.\n\n\n";
 
-    cout<<"                Podaj numer pierwszego miasta: ";
+
+
+    cout<<"\n                Podaj numer pierwszego miasta: ";
 	cin >> nowe->miasto1;
 
 	while (nowe->miasto1 <= 0 || nowe->miasto1 > ilosc_miast) {
-<<<<<<< HEAD
-		cout << "          podaj poprawny numer miasta: ";
-=======
-		cout << "                 podaj poprawny numer miasta: ";
->>>>>>> origin/master
+		cout << "                 Podaj poprawny numer miasta: ";
 		cin >> nowe->miasto1;
 	};
 
    cout<<"                 Podaj numer drugiego miasta: ";
     cin>> nowe->miasto2;
 
-<<<<<<< HEAD
 	while (nowe->miasto2 <= 0 || nowe->miasto2 > ilosc_miast || nowe->miasto2 == nowe->miasto1) {
-		cout << "          podaj poprawny numer miasta: ";
-=======
-	while (nowe->miasto2 <= 0 || nowe->miasto2 > ilosc_miast) {
-		cout << "                 podaj poprawny numer miasta: ";
->>>>>>> origin/master
+		cout << "                 Podaj poprawny numer miasta: ";
 		cin >> nowe->miasto2;
 	};
 
@@ -110,11 +101,7 @@ void zapisywanie_polaczenia ()
     cin>> nowe->waga;
 
 	while (nowe->waga <= 0) {
-<<<<<<< HEAD
-		cout << "          Podaj dodatnia wage: ";
-=======
 		cout << "                   Podaj dodatnia wage: ";
->>>>>>> origin/master
 		cin >> nowe->waga;
 	}
 
@@ -312,7 +299,7 @@ void tworzenie_polaczen()
 			aktualne->nastepne = przeszukuj_las->krawedzie;
 			drzewo_do_polaczenia = drzewo_do_polaczenia->nastepne_drzewo;
 			drzewo_do_polaczenia->nastepne_drzewo = przeszukuj_las->nastepne_drzewo;
-			
+
 		}
 		else if (r == 1) {
 
@@ -356,8 +343,8 @@ void wypisywanie()
     cout<<"\n\n               LISTA:\n\n";
     cout<<"    |  Miasto A  |  Miasto B  |  Waga\n";
     cout<<"    ---------------------------------------\n";
-	
-	
+
+
 	while (las->krawedzie != NULL) {
 
 		cout << "          " << las->krawedzie->miasto1 << "     |      " << las->krawedzie->miasto2 << "     |    " << las->krawedzie->waga << endl;
