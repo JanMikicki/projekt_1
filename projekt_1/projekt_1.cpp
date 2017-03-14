@@ -34,6 +34,7 @@ void tworzenie_polaczen();
 void wypisywanie();
 int przeszukaj_las(drzewo*, polaczenie*, int &);
 int przeszukaj_drzewo(polaczenie*, polaczenie*);
+bool sprawdz(polaczenie*);
 
 
 int main()
@@ -64,6 +65,7 @@ void start()
                default: start();                           break;
            }
 }
+
 
 void zapisywanie_polaczenia ()
 {
@@ -101,6 +103,11 @@ void zapisywanie_polaczenia ()
 
 	while (nowe->miasto2 <= 0 || nowe->miasto2 > ilosc_miast || nowe->miasto2 == nowe->miasto1) {
 		cout << "                 Podaj poprawny numer miasta: ";
+		cin >> nowe->miasto2;
+	};
+
+	while (sprawdz(nowe)) {
+		cout << "                 Podales juz to polaczenie: ";
 		cin >> nowe->miasto2;
 	};
 
@@ -144,8 +151,6 @@ void zapisywanie_polaczenia ()
     cin>>wybor;
 
 
-	// powinnismy potem tak zrobic zeby nie laczyc 2 miast kilka razy
-
      switch(wybor)
            {
                case 0:  start();                      break;
@@ -157,6 +162,30 @@ void zapisywanie_polaczenia ()
                         }                           break;
            }
 
+}
+
+bool sprawdz(polaczenie* nowe) {
+
+	if (start_listy == NULL) return false;
+
+	polaczenie* przeszukaj = start_listy;
+	int pierwsze = nowe->miasto1;
+	int drugie = nowe->miasto2;
+
+	do {
+
+		if (przeszukaj->miasto1 == pierwsze || przeszukaj->miasto2 == pierwsze) {
+
+			if (przeszukaj->miasto1 == drugie || przeszukaj->miasto2 == drugie)
+				return true;
+		}
+
+		przeszukaj = przeszukaj->nastepne;
+
+
+	} while (przeszukaj != NULL);
+
+	return false;
 }
 
 void generowanie_drzewa()
