@@ -42,7 +42,6 @@ bool sprawdz(polaczenie*);
 
 int main()
 {
-    
     zapisywanie_polaczenia();
 
     return 0;
@@ -74,11 +73,14 @@ void zapisywanie_polaczenia ()
 
     system("cls");
 
+
+    cout<<"\n\n\n                      PLANOWANIE BUDOWY \n";
+
 	if (start_listy != NULL) {
 
 		polaczenie* wyswietlaj = start_listy;
 
-		cout << "\n                         0) Powrot\n\n";
+		cout << "\n\n                         0) Powrot\n\n";
 		cout << "\n\n                       Dodane polaczenia: \n" << endl;
 		cout << "                    Miasto A" << " | " << "Miasto B" << " | Waga" << endl;
 		cout << "                  -------------------------------"<< endl;
