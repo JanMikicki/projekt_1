@@ -43,7 +43,7 @@ int main()
     cout<<"                     Podaj ilosc miast: ";
     cin>>ilosc_miast;
 
-    start();
+    zapisywanie_polaczenia();
 
     return 0;
 }
@@ -150,14 +150,14 @@ void zapisywanie_polaczenia ()
     ilosc_polaczen++;
 
     cout<<"\n\n\n               1)   Dodaj kolejne polaczenia";
-    cout<<"\n\n               0)            Powrot\n";
+    cout<<"\n\n               2)      Generowanie drzewa\n";
     cin>>wybor;
 
 
      switch(wybor)
-           {
-               case 0:  start();                      break;
+           {            
                case 1:  zapisywanie_polaczenia ();    break;
+			   case 2:  generowanie_drzewa();		  break;
                default: {
                             cout<<"          Podales zly numer!!!\n\n";
                             system("pause");
@@ -278,11 +278,11 @@ void tworzenie_polaczen()
 	polaczenie* aktualne = start_listy;
 	start_listy = start_listy->nastepne;
 
-	if (start_listy == NULL) return;
-
 	las->nastepne_drzewo = NULL;
 	las->krawedzie = aktualne;
 	aktualne->nastepne = NULL;
+
+	if (start_listy == NULL) return;
 
 	do {
 		aktualne = start_listy;
