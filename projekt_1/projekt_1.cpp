@@ -1,3 +1,6 @@
+//Techniki programowania - Projekt 1 - Pawel Wilgan Jan Mikicki
+//Algorytm Kruskala - siec kolejowa
+
 #include <iostream>
 #include <cstdlib>
 
@@ -39,15 +42,7 @@ bool sprawdz(polaczenie*);
 
 int main()
 {
-    cout<<"\n\n\n                      PLANOWANIE BUDOWY \n\n\n";
-    cout<<"                     Podaj ilosc miast: ";
-    cin>>ilosc_miast;
-
-	while (ilosc_miast <= 1) {
-		cout << "Podaj co najmniej 2 miasta: ";
-		cin >> ilosc_miast;
-	}
-
+    
     zapisywanie_polaczenia();
 
     return 0;
@@ -79,11 +74,12 @@ void zapisywanie_polaczenia ()
 
     system("cls");
 
-
 	if (start_listy != NULL) {
+
 		polaczenie* wyswietlaj = start_listy;
+
+		cout << "\n                         0) Powrot\n\n";
 		cout << "\n\n                       Dodane polaczenia: \n" << endl;
-		cout << "\n                         0) Powtot\n\n";
 		cout << "                    Miasto A" << " | " << "Miasto B" << " | Waga" << endl;
 		cout << "                  -------------------------------"<< endl;
 		do {
@@ -104,7 +100,7 @@ void zapisywanie_polaczenia ()
             start();
 		}
 
-	while (nowe->miasto1 < 0 || nowe->miasto1 > ilosc_miast) {
+	while (nowe->miasto1 < 0) {
 		cout << "                 Podaj poprawny numer miasta: ";
 		cin >> nowe->miasto1;
 		if(nowe->miasto1 == 0){
@@ -118,7 +114,7 @@ void zapisywanie_polaczenia ()
             start();
 		}
 
-	while (nowe->miasto2 <= 0 || nowe->miasto2 > ilosc_miast || nowe->miasto2 == nowe->miasto1) {
+	while (nowe->miasto2 < 0 || nowe->miasto2 == nowe->miasto1) {
 		cout << "                 Podaj poprawny numer miasta: ";
 		cin >> nowe->miasto2;
 		if(nowe->miasto2 == 0){
@@ -127,6 +123,7 @@ void zapisywanie_polaczenia ()
 	};
 
 	wiadomosc = true;
+
 	} while (sprawdz(nowe));	//sprawdza czy polaczenie nie zostalo juz dodane wczesniej
 
 
@@ -192,6 +189,8 @@ void zapisywanie_polaczenia ()
 }
 
 bool sprawdz(polaczenie* nowe) {
+
+	//sprawdza czy polaczenie nie zostalo juz dodane wczesniej
 
 	if (start_listy == NULL) return false;
 
