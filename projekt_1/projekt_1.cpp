@@ -8,7 +8,7 @@ struct polaczenie
     int miasto1;
     int miasto2;
     int waga;
-    int przynaleznosc_do_drzewa=0;
+    int przynaleznosc_do_drzewa = 0;
 
 	polaczenie* nastepne;
 
@@ -42,6 +42,11 @@ int main()
     cout<<"\n\n\n                      PLANOWANIE BUDOWY \n\n\n";
     cout<<"                     Podaj ilosc miast: ";
     cin>>ilosc_miast;
+
+	while (ilosc_miast <= 1) {
+		cout << "Podaj co najmniej 2 miasta: ";
+		cin >> ilosc_miast;
+	}
 
     zapisywanie_polaczenia();
 
@@ -110,7 +115,8 @@ void zapisywanie_polaczenia ()
 	};
 
 	wiadomosc = true;
-	} while (sprawdz(nowe));
+	} while (sprawdz(nowe));	//sprawdza czy polaczenie nie zostalo juz dodane wczesniej
+
 
     cout<<"                   Podaj wage polaczenia: ";
     cin>> nowe->waga;
@@ -159,7 +165,7 @@ void zapisywanie_polaczenia ()
                case 1:  zapisywanie_polaczenia ();    break;
 			   case 2:  generowanie_drzewa();		  break;
                default: {
-                            cout<<"          Podales zly numer!!!\n\n";
+                            cout<<"\n		  Podales zly numer!!!\n\n";
                             system("pause");
                              start();
                         }                           break;
