@@ -402,6 +402,7 @@ void wypisywanie()
 
 	cout << "\n\n";
 	system("pause");
+	exit (2);
 
 }
 
