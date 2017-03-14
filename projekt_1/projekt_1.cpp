@@ -79,11 +79,11 @@ void zapisywanie_polaczenia ()
 
     system("cls");
 
-    cout<<"\n\n                  Aktualnie podales "<<ilosc_polaczen<<" polaczen.\n\n\n";
 
 	if (start_listy != NULL) {
 		polaczenie* wyswietlaj = start_listy;
-		cout << "                       Dodane polaczenia: \n" << endl;
+		cout << "\n\n                       Dodane polaczenia: \n" << endl;
+		cout << "\n                         0) Powtot\n\n";
 		cout << "                    Miasto A" << " | " << "Miasto B" << " | Waga" << endl;
 		cout << "                  -------------------------------"<< endl;
 		do {
@@ -98,20 +98,32 @@ void zapisywanie_polaczenia ()
 
 	if(wiadomosc) cout << "\n                 Podales juz to polaczenie.\n";
 
-    cout<<"\n                Podaj numer pierwszego miasta: ";
+    cout<<"\n\n\n                Podaj numer pierwszego miasta: ";
 	cin >> nowe->miasto1;
+	if(nowe->miasto1 == 0){
+            start();
+		}
 
-	while (nowe->miasto1 <= 0 || nowe->miasto1 > ilosc_miast) {
+	while (nowe->miasto1 < 0 || nowe->miasto1 > ilosc_miast) {
 		cout << "                 Podaj poprawny numer miasta: ";
 		cin >> nowe->miasto1;
+		if(nowe->miasto1 == 0){
+            start();
+		}
 	};
 
    cout<<"                 Podaj numer drugiego miasta: ";
     cin>> nowe->miasto2;
+    if(nowe->miasto2 == 0){
+            start();
+		}
 
 	while (nowe->miasto2 <= 0 || nowe->miasto2 > ilosc_miast || nowe->miasto2 == nowe->miasto1) {
 		cout << "                 Podaj poprawny numer miasta: ";
 		cin >> nowe->miasto2;
+		if(nowe->miasto2 == 0){
+            start();
+		}
 	};
 
 	wiadomosc = true;
@@ -120,10 +132,16 @@ void zapisywanie_polaczenia ()
 
     cout<<"                   Podaj wage polaczenia: ";
     cin>> nowe->waga;
+    if(nowe->waga == 0){
+            start();
+		}
 
 	while (nowe->waga <= 0) {
 		cout << "                   Podaj dodatnia wage: ";
 		cin >> nowe->waga;
+		if(nowe->waga == 0){
+            start();
+		}
 	}
 
 	//wstawianie na odpowiednie miejsce
@@ -161,7 +179,7 @@ void zapisywanie_polaczenia ()
 
 
      switch(wybor)
-           {            
+           {
                case 1:  zapisywanie_polaczenia ();    break;
 			   case 2:  generowanie_drzewa();		  break;
                default: {
@@ -226,7 +244,7 @@ int przeszukaj_drzewo(polaczenie* krawedzie, polaczenie* aktualne) {
 			if (ktory_znaleziono == 1) return 2;
 			else ktory_znaleziono = 2;
 		}
-		
+
 		przeszukaj = przeszukaj->nastepne;
 
 	} while (przeszukaj != NULL);
@@ -269,7 +287,7 @@ int przeszukaj_las(drzewo* las, polaczenie* aktualne, int &i) {
 			break;
 		}
 		i++;
-		
+
 	} while (las_temp != NULL);
 
 	if (znaleziono) //dolacz do drzewa
@@ -292,7 +310,7 @@ void tworzenie_polaczen()
 
 	do {
 		aktualne = start_listy;
-		start_listy = start_listy->nastepne;	
+		start_listy = start_listy->nastepne;
 
 		drzewo* przeszukuj_las = las;
 		polaczenie* przeszukuj_drzewo;
