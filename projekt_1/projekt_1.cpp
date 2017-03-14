@@ -10,12 +10,12 @@ struct polaczenie
     int waga;
     int przynaleznosc_do_drzewa=0;
 
-
 	polaczenie* nastepne;
 
 };
 
 struct drzewo {
+
 	polaczenie* krawedzie;
 	drzewo* nastepne_drzewo;
 };
@@ -87,8 +87,11 @@ void zapisywanie_polaczenia ()
 		} while (wyswietlaj != NULL);
 	}
 
+	bool wiadomosc = false;
 
+	do {
 
+	if(wiadomosc) cout << "\n                 Podales juz to polaczenie.\n";
 
     cout<<"\n                Podaj numer pierwszego miasta: ";
 	cin >> nowe->miasto1;
@@ -106,10 +109,8 @@ void zapisywanie_polaczenia ()
 		cin >> nowe->miasto2;
 	};
 
-	while (sprawdz(nowe)) {
-		cout << "                 Podales juz to polaczenie: ";
-		cin >> nowe->miasto2;
-	};
+	wiadomosc = true;
+	} while (sprawdz(nowe));
 
     cout<<"                   Podaj wage polaczenia: ";
     cin>> nowe->waga;
@@ -118,6 +119,8 @@ void zapisywanie_polaczenia ()
 		cout << "                   Podaj dodatnia wage: ";
 		cin >> nowe->waga;
 	}
+
+	//wstawianie na odpowiednie miejsce
 
 	if (ilosc_polaczen == 0) {
 		start_listy = nowe;
@@ -275,13 +278,15 @@ void tworzenie_polaczen()
 	polaczenie* aktualne = start_listy;
 	start_listy = start_listy->nastepne;
 
+	if (start_listy == NULL) return;
+
 	las->nastepne_drzewo = NULL;
 	las->krawedzie = aktualne;
 	aktualne->nastepne = NULL;
 
 	do {
 		aktualne = start_listy;
-		start_listy = start_listy->nastepne;
+		start_listy = start_listy->nastepne;	
 
 		drzewo* przeszukuj_las = las;
 		polaczenie* przeszukuj_drzewo;
